@@ -1,4 +1,4 @@
-# ** 1.Audit Engine Deployment**
+# **1.Audit Engine Deployment**
 ### Install auditd
 ```bash
 sudo apt install auditd -y
