@@ -19,7 +19,7 @@ sudo systemctl status auditd
 ```bash
 sudo tail -5 /var/log/audit/audit.log
 ```
-# ** 2.Rule Generation: Custom Audit Rules**
+# **2.Rule Generation: Custom Audit Rules**
 ## Open the Audit Rules File and Write Custom Rules
 ### Rule 1 : Track All Commands Executed (exec-commands)
 ```bash
