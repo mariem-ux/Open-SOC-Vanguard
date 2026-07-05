@@ -50,14 +50,67 @@ sudo systemctl restart auditd
 ```bash
 sudo auditctl -l
 ```
-## Quick Test to Confirm It Works
+## Quick Test to Confirm It Works (on Lubuntu)
+```bash
+whoami
+sudo tail -50 /var/log/audit/audit.log | grep exec_commands
+```
+# **3.SIEM Mapping: Connecting auditd to Wazuh**
+## Locate the Wazuh Agent Configuration File
+```bash
+<localfile>
+<log_format>syslog</log_format>
+<location>/var/log/syslog</location>
+</localfile>
+```
+## Add the auditd Log Ingestion Block
+```bash
+<localfile>
+<log_format>syslog</log_format>
+<location>/var/log/syslog</location>
+</localfile>
 
-
-
-
-
-
-
+<localfile>
+<log_format>audit</log_format>
+<loction>/var/log/audit/audit. log</location>
+</localfile>
+```
+## Restart the Wazuh Agent to Apply the Changes
+```bash
+sudo systemctl restart wazuh-agent
+sudo systemctl status wazuh-agent
+```
+# **4.Behavior Verification: End-to-End Pipeline Test**
+## Test Command Execution Tracking
+```bash
+whoami
+id
+uname -a
+```
+## Test Privilege Escalation Tracking
+```bash
+sudo cat /etc/passwd
+sudo ls /root
+```
+## Test Cron Job Modification Tracking
+```bash
+crontab -e
+```
+open the cron editor and add in the bottom 
+```bash
+@reboot echo ”soc test”
+```
+## Test the /etc/passwd Watch Rule
+```bash
+sudo touch /etc/passwd
+```
+## Verify All Alerts in the Wazuh Dashboard
+```bash
+sudo touch /etc/passwd
+sudo touch /etc/shallow
+sudo touch /etc/sudoers
+sudo ausearch -k passwd_changes --start recent
+```
 
 
 
