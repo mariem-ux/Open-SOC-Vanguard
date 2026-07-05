@@ -112,10 +112,6 @@ sudo systemctl status wazuh-dashboard
 ```
 on kali :
 ```bash
-nmap -sS 192.168.2.128
-```
-or 
-```bash
 ping -c 10 192.168.2.10
 ```
 # **Bonus : API Log Ingestion**
