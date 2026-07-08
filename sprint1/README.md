@@ -15,15 +15,15 @@ sudo bash ./wazuh-install.sh -a
 ## Verifying All Three Wazuh Services
 ### wazuh-manager :
 ```bash
-sudo sustemctl status wazuh-manager
+sudo systemctl status wazuh-manager
 ```
 ### wazuh-indexer:
 ```bash
-sudo sustemctl status wazuh-indexer
+sudo systemctl status wazuh-indexer
 ```
 ### wazuh-dashboard
 ```bash
-sudo sustemctl status wazuh-dashboard
+sudo systemctl status wazuh-dashboard
 ```
 # **2.Agent Enrolement**
 
