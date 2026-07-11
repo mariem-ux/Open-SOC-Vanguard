@@ -1,4 +1,4 @@
-# ** 1.Attack Simulation : **
+# 1.Attack Simulation : 
 before starting the task : 
 on wazuh :
 ```bash
