@@ -83,30 +83,31 @@ sudo ausearch -k passwd_changes --start recent
 ```
 ## 3.3 Write Rule 2: Unauthorized Persistence Detection
 ```xml
-<group name="custom_attack,linux_recon,">
-    <rule id="100002" level="12">
-        <if_sid>92600</if_sid>
-        <field name="audit.key">exec_commands</field>
-        <field name="audit.exe" type="pcre2">/usr/bin/sudo|/usr/bin/whoami|/usr/bin/id</field>
-        <description>Possible privilege escalation recon: suspicious command executed</description>
-        <mitre>
-            <id>T1548.003</id>
-        </mitre>
-    </rule>
+<!-- Rule 2: Unauthorized persistence detection -->
+<group name="custom_attack,linux_persistence,">
+  <rule id="100003" level="12">
+    <if_sid>92600</if_sid>
+    <field name="audit.key">exec_commands</field>
+    <field name="audit.exe" type="pcre2">\/usr\/bin\/crontab</field>
+    <description>Unauthorized persistence attempt: crontab modification detected</description>
+    <mitre>
+      <id>T1053.003</id>
+    </mitre>
+  </rule>
 </group>
 ```
 ## 3.4 Write Rule 3: Sensitive File Tampering Detection
 ```xml
-<group name="custom_attack,linux_recon,">
-    <rule id="100002" level="12">
-        <if_sid>92600</if_sid>
-        <field name="audit.key">exec_commands</field>
-        <field name="audit.exe" type="pcre2">/usr/bin/sudo|/usr/bin/whoami|/usr/bin/id</field>
-        <description>Possible privilege escalation recon: suspicious command executed</description>
-        <mitre>
-            <id>T1548.003</id>
-        </mitre>
-    </rule>
+<!-- Rule 3: Sensitive file tampering detection -->
+<group name="custom_attack,linux_credential_access,">
+  <rule id="100004" level="14">
+    <if_sid>80700</if_sid>
+    <field name="audit.key">passwd_changes</field>
+    <description>Critical: Sensitive authentication file accessed or modified</description>
+    <mitre>
+      <id>T1003</id>
+    </mitre>
+  </rule>
 </group>
 ```
 ## 3.5 Save and Restart Wazuh Manager
