@@ -81,6 +81,108 @@ sudo ausearch -k passwd_changes --start recent
     </rule>
 </group>
 ```
+## 3.3 Write Rule 2: Unauthorized Persistence Detection
+```xml
+<group name="custom_attack,linux_recon,">
+    <rule id="100002" level="12">
+        <if_sid>92600</if_sid>
+        <field name="audit.key">exec_commands</field>
+        <field name="audit.exe" type="pcre2">/usr/bin/sudo|/usr/bin/whoami|/usr/bin/id</field>
+        <description>Possible privilege escalation recon: suspicious command executed</description>
+        <mitre>
+            <id>T1548.003</id>
+        </mitre>
+    </rule>
+</group>
+```
+## 3.4 Write Rule 3: Sensitive File Tampering Detection
+```xml
+<group name="custom_attack,linux_recon,">
+    <rule id="100002" level="12">
+        <if_sid>92600</if_sid>
+        <field name="audit.key">exec_commands</field>
+        <field name="audit.exe" type="pcre2">/usr/bin/sudo|/usr/bin/whoami|/usr/bin/id</field>
+        <description>Possible privilege escalation recon: suspicious command executed</description>
+        <mitre>
+            <id>T1548.003</id>
+        </mitre>
+    </rule>
+</group>
+```
+## 3.5 Save and Restart Wazuh Manager
+```bash
+sudo systemctl restart wazuh-manager
+sudo /var/ossec/bin/wazuh-analysisd -t 2>&1 | tail -20
+```
+## 3.6 Trigger and Verify Your Custom Rules 
+```bash
+sudo touch /etc/passwd
+```
+# **5.Bonus:Sigma Formatting
+## 5.3 Map Your Wazuh Rule to Sigma Format
+On wazuh server
+```bash
+sudo systemctl status wazuh-manager
+```
+On lubunto
+```bash
+sudo systemctl status wazuh-agent
+sudo systemctl status auditd
+sudo ausearch -k passwd_changes
+```
+### Verifying the Raw auditd Event Linked to Rule 100004
+On wazuh server
+```bash
+uuidgen
+```
+## 5.4 Save the Sigma Rule as a File
+On wazuh server
+```bash
+mkdir -p /home/mariem/sigma_rules
+```
+```yaml
+title: Sensitive Authentication File Accessed or Modified
+id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+status: experimental
+description: >
+  Detects any access or modification to sensitive Linux authentication
+  files such as /etc/passwd, /etc/shadow, or /etc/sudoers. This behavior
+  is commonly associated with privilege escalation and credential access
+  attacks.
+author: Mariem
+date: 2026/07/06
+references:
+  - https://attack.mitre.org/techniques/T1003/
+tags:
+  - attack.credential_access
+  - attack.T1003
+logsource:
+  product: linux
+  service: auditd
+detection:
+  selection:
+    type: 'SYSCALL'
+    key: 'passwd_changes'
+    exe: '/usr/bin/touch'
+  condition: selection
+falsepositives:
+  - System administrators performing legitimate maintenance
+  - Package managers updating system files during upgrades
+level: critical
+```
+```bash
+cat /home/mariem/sigma_rules/sensitive_file_tampering.yml
+```
+## 5.5 Validate the Sigma Rule Format
+On wazuh server
+```bash
+pip3 install sigma-cli
+sigma check /home/mariem/sigma_rules/sensitive_file_tampering.yml
+```
+
+
+
+
 
 
 
