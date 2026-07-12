@@ -69,17 +69,16 @@ sudo ausearch -k passwd_changes --start recent
 # **3.Custom Decoders & Rules**
 ## 3.2 Write Rule 1: Privilege Escalation Recon Detection
 ```xml
-<!--Rule 1 : Privilege escalation recon detection -->
 <group name="custom_attack,linux_recon,">
-<rule id="100002" level="12">
-<if_sid>92600</if_sid>
-<field name="audit.key">exec_commands</field>
-<field name="audit.exe" type="pcre2">\/usr\/bin\/sudo|\/usr\/bin\/whoami|\/usr\/bin\/id</field>
-<description>Possible privilege escalation recon: suspicious command executed</description>
-<mitre>
-<id>T1548.003</id>
-</mitre>
-</rule>
+    <rule id="100002" level="12">
+        <if_sid>92600</if_sid>
+        <field name="audit.key">exec_commands</field>
+        <field name="audit.exe" type="pcre2">/usr/bin/sudo|/usr/bin/whoami|/usr/bin/id</field>
+        <description>Possible privilege escalation recon: suspicious command executed</description>
+        <mitre>
+            <id>T1548.003</id>
+        </mitre>
+    </rule>
 </group>
 ```
 
