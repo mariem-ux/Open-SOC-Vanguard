@@ -119,7 +119,7 @@ sudo /var/ossec/bin/wazuh-analysisd -t 2>&1 | tail -20
 ```bash
 sudo touch /etc/passwd
 ```
-# **5.Bonus:Sigma Formatting
+# **5.Bonus:Sigma Formatting**
 ## 5.3 Map Your Wazuh Rule to Sigma Format
 On wazuh server
 ```bash
